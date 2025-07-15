@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:23:10 by ymazini           #+#    #+#             */
-/*   Updated: 2025/07/14 16:21:01 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:51:04 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@
 #define WINDOW_HEIGHT 720
 #define WINDOW_WIDTH 1280
 #define TILE_SIZE 32
-#define MINIMAP_TILE_SIZE 18
-#define PI 3.14159265358979323846
-#define FOV_ANGLE (60 * (PI / 180.0))
+#define MINIMAP_SCALE_FACTOR 0.5
+
+#define PI 3.1415926535
+#define FOV (60 * (PI / 180.0))
 
 #define NAME "cub3D"
 #define TRUE 1
@@ -39,18 +40,6 @@
 #define BUFFER_SIZE 5
 #define WALL '1'
 #define FLOOR '0'
-
-
-// # define S_KEY	1
-// # define A_KEY	0
-// # define W_KEY	13
-// # define D_KEY	2
-// # define ESC_KEY	53
-
-// # define DOWN_KEY	125
-// # define UP_KEY		126
-// # define RIGHT_KEY	124
-// # define KEY_LEFT	123
 
 
 # define KEY_W        13
@@ -101,6 +90,7 @@ typedef struct  s_map
 	double map_player_x;
 	double map_player_y;
 	char spawn_side_face; //{N S W E}
+	int player_count;
 	
 }	t_map;
 
@@ -129,22 +119,18 @@ typedef struct s_ray
 	float	ray_angle;
 	float	wall_hit_x;
 	float	wall_hit_y;
+	float	horzhit_x;
+	float	horzhit_y;
+	float	verthit_x;
+	float	verthit_y;
+	
 	float	distance;
-	bool	was_hit_vertical;
 
-	bool	is_ray_facing_down;
 	bool	is_ray_facing_up;
+	bool	is_ray_facing_down;
 	bool	is_ray_facing_left;
 	bool	is_ray_facing_right;
-
-	float horz_wallhitx;
-	float horz_wallhity;
-	float vert_wallhitx;
-	float vert_wallhity;
-
-	bool found_horz_wall;
-	bool found_vert_wall;
-	
+	// bool	was_hit_vertical;
 }	t_ray;
 
 typedef struct s_player
@@ -176,14 +162,7 @@ typedef struct s_game
 	
 }t_game;
 
-//-------- Helpers Func ----------//
 
-
-
-	
-void free_grid(char **grid);
-//int  exit_game(t_cub_data *data);
-void exit_with_error(char *message, t_game *game);
 
 //LIB
 
@@ -194,6 +173,7 @@ int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 char	*ft_itoa(int n);
 void ft_putstr(char *str);
+void	*ft_memset(void *b, int c, size_t len);
 // String Manipulation Functions
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s);
@@ -238,19 +218,38 @@ char	*ft_strdup(const char *s);
 
 //-------- Parsing Func ----------//
 
+void    separate_file_content(t_list *all_lines, t_list **id_lines, t_list **map_lines);
+
+void	create_map_grid(t_list **map_lines_head, t_game *data);
+ void	parse_texture(char **tokens, t_game *data);
+ void	parse_color(char **tokens, t_game *data);
+ void	validate_all_identifiers_found(t_game *data);
+ int	count_tokens(char **tokens);
+
+void parse_identifiers(t_list *id_lines, t_game *data);
+void    separate_file_content(t_list *all_lines, t_list **id_lines, t_list **map_lines);
+t_list *read_file_to_list(char *filename);
+  int  validate_filename(char *filename);
+  
+  void	validate_map_content(t_game *data);
+  
+//-------- Helpers Func ----------//
 
 
-//void free_grid(char **grid);
-//int  exit_game(t_game *game);
+
+void 	exit_with_error(char *message, t_game *game);
+void free_grid(char **grid);
+int  exit_game(t_game *game);
 
 
 //-------- Rendring Func ----------//
 bool	intialize_mlx(t_game *game);
-void	render(t_game *game);
-bool	intialize_ray(t_game *game);
+void	ft_render(t_game *game);
 float	normalize_angle(float angle);
+void	cast_rays(t_game *game);
+void	my_mlx_pixel_put(t_game *game, int x, int y, int color);
 bool	hit_wall(t_game *game, float x, float y);
-int		ft_exit(t_game *game);
+void	update_player(t_game *game);
 
 
 //-------- testing makefile relink and functionality ----------//

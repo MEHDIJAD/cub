@@ -1,7 +1,7 @@
 
 NAME		=	cub3D
 CC			=	cc
-CFLAGS		=	#-fsanitize=address -g3 #-Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS		=	-fsanitize=address -g3 #-Wall -Wextra -Werror -fsanitize=address -g3
 RM			=	rm -rf
 SRC_DIR		=	sources
 OBJ_DIR		=	obj
@@ -10,12 +10,14 @@ MLX_DIR		=	minilibx_opengl
 
 SRCS		=	main.c \
 				parsing/parsing.c \
-				rendering/render.c \
+				parsing/read_file.c \
+				parsing/validate_identifiers.c \
+				parsing/validate_map.c \
+				rendering/ft_render.c \
 				rendering/intialize_mlx.c \
-				rendering/intialize_ray.c \
 				rendering/normalize_angle.c \
-				rendering/hit_wall.c \
-				rendering/ft_exit.c \
+				rendering/cast_rays.c \
+				rendering/update_player.c \
 				tools/ft_atoi.c \
 				tools/ft_isalnum.c \
 				tools/ft_isalpha.c \
