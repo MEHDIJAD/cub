@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 09:14:57 by eel-garo          #+#    #+#             */
-/*   Updated: 2025/07/16 11:41:06 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/16 13:26:41 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,11 @@ bool	find_vertocal_intersection(t_game *game, float ray_angle, int i)
 	{
 		float x_to_check = next_x;
 		if (game->rays[i].is_ray_facing_left)
-    		x_to_check -= 1; // Look at the pixel in the tile to the left of the line
+    		x_to_check -= 1;
 		if (hit_wall(game, x_to_check, next_y))
 		{
 			game->rays[i].verthit_x = next_x;
 			game->rays[i].verthit_y = next_y;
-			// printf("VerthitX=%.0f\t", game->ray.verthit_x);
-			// printf("VerthitY=%.0f\n", game->ray.verthit_y);
 			return (true);
 			
 		}
@@ -186,33 +184,30 @@ void	cast_one_ray(t_game *game , float ray_angle, int i)
 	float horz_hit_distance;
 	float vert_hit_distance;
 
-	horz_hit_distance = 1e30; // A number with 30 zeros
+	horz_hit_distance = 1e30;
     vert_hit_distance = 1e30;
-	
 	ray_angle = normalize_angle(ray_angle);
 	if (find_horizontal_intersection(game, ray_angle, i)){
-		// calcule the horiz dist
 		horz_hit_distance = distance(game->player.x, game->player.y,
 			game->rays[i].horzhit_x, game->rays[i].horzhit_y);
-		// printf("Horz=%.0f\n", horz_hit_distance);
 	}
 	if (find_vertocal_intersection(game, ray_angle, i)){
-		// calcule the vert dist
 		vert_hit_distance = distance(game->player.x, game->player.y,
 			game->rays[i].verthit_x, game->rays[i].verthit_y);
-		// printf("Vert=%.0f\n", vert_hit_distance);
 	}
 	if (vert_hit_distance < horz_hit_distance)
 	{
 		game->rays[i].distance = vert_hit_distance;
 		game->rays[i].wall_hit_x = game->rays[i].verthit_x;
 		game->rays[i].wall_hit_y = game->rays[i].verthit_y;
+		game->rays[i].was_hit_vertical = true;
 	}
 	else 
 	{
 		game->rays[i].distance = horz_hit_distance;
 		game->rays[i].wall_hit_x = game->rays[i].horzhit_x;
 		game->rays[i].wall_hit_y = game->rays[i].horzhit_y;
+		game->rays[i].was_hit_vertical = false;
 	}
 	game->rays[i].ray_angle = ray_angle;
 }

@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:23:58 by ymazini           #+#    #+#             */
-/*   Updated: 2025/07/16 11:40:58 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/16 15:59:01 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,86 @@ void	parse_texture(char **tokens, t_game *data)
 	}
 }
 
+static int	count_char_in_string(const char *str, char c)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+
+static int	is_string_numeric(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || str[0] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if ( str[i] != ' ' && !ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+// EDITED VERSION; 
+void	parse_color(char **tokens, t_game *data)
+{
+	char	**rgb_values;
+	int		r;
+	int		g;
+	int		b;
+
+	if (count_char_in_string(tokens[1], ',') != 2)
+		exit_with_error("Invalid RGB format: must have exactly two commas.", data);
+
+	rgb_values = ft_split(tokens[1], ',');
+	if (!rgb_values || count_tokens(rgb_values) != 3)
+	{
+		free_grid(rgb_values);
+		exit_with_error("Invalid RGB format: must have three color values.", data);
+	}
+	
+	if (!is_string_numeric(rgb_values[0]) || \
+		!is_string_numeric(rgb_values[1]) || \
+		!is_string_numeric(rgb_values[2]))
+	{
+		free_grid(rgb_values);
+		exit_with_error("RGB values must be numeric.", data);
+	}
+	r = ft_atoi(rgb_values[0]);
+	g = ft_atoi(rgb_values[1]);
+	b = ft_atoi(rgb_values[2]);
+	free_grid(rgb_values);
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+		exit_with_error("RGB color value out of range (0-255).", data);
+	if (ft_strncmp("F", tokens[0], 2) == 0)
+	{
+		if (data->checklist.f == 1)
+			exit_with_error("Duplicate F identifier found.", data);
+		data->checklist.f = 1;
+		data->asset_data.floor_rgb = (t_rgb){r, g, b, 1};
+	}
+	else if (ft_strncmp("C", tokens[0], 2) == 0)
+	{
+		if (data->checklist.c == 1)
+			exit_with_error("Duplicate C identifier found.", data);
+		data->checklist.c = 1;
+		data->asset_data.ceilllig_rgb = (t_rgb){r, g, b, 1};
+	}
+}
+
+
 void	flood_fill_rec(t_game *data, char **grid_copy, int y, int x)
 {
 	if (y < 0 || y >= data->map.height || x < 0 || x >= data->map.width)
@@ -97,7 +177,7 @@ char	**duplicate_grid(char **grid, int height)
 		new_grid[y] = ft_strdup(grid[y]);
 		if (!new_grid[y])
 		{
-			free_grid(new_grid); // Assuming you have a free_grid helper.
+			free_grid(new_grid);
 			return (NULL);
 		}
 		y++;
@@ -184,7 +264,7 @@ void	validate_map_content(t_game *data)
 				data->map.map_player_x = (double)x + 0.5;
 				data->map.map_player_y = (double)y + 0.5;
 				data->map.spawn_side_face = c;
-				data->map.grid[y][x] = '0'; // Replace player with floor
+				data->map.grid[y][x] = '0';
 			}
 			x++;
 		}
@@ -273,74 +353,52 @@ void	run_parser(char *filename, t_game *game)
 	validate_walls_are_closed(game);
 }
 
+float	rotation_angle(t_game *game)
+{
+	if(game->map.spawn_side_face == 'E')
+		return (0);
+	else if (game->map.spawn_side_face == 'N')
+		return (1.5 * PI);
+	else if (game->map.spawn_side_face == 'W')
+		return (PI);
+	else if (game->map.spawn_side_face == 'S')
+		return (PI / 2);
+	else
+		return (-1);
+}
+
+bool	launch_game(t_game *game)
+{
+	game->player.x = game->map.map_player_x * TILE_SIZE;
+	game->player.y = game->map.map_player_y * TILE_SIZE;
+	game->player.rotation_angle = rotation_angle(game);
+    game->player.turn_direction = 0;
+    game->player.walk_direction = 0;
+	game->player.strafe_direction = 0;
+    game->player.move_speed = 3;
+    game->player.rotation_speed = 1 * (PI / 180);
+	intialize_mlx(game);
+	return (true);
+}
+
 int	main(int ac, char **av)
 {
 	t_game	game;
 
-	// if (ac != 2)
-	// {
-	// 	ft_putstr_fd("Usage: ./cub3D <path_to_map.cub>\n", 2);
-	// 	return (1);
-	// }
-	// ft_memset(&game, 0, sizeof(t_game));
-	// run_parser(av[1], &game);
-	// print_parsed_data(&game);
-
-	// // ASSSUEM MEHDI WILL START Hre
-	// // launch_game(&game);
-	// free_grid(game.map.grid);
-	// free(game.asset_data.north_tex_path);
-	// free(game.asset_data.south_tex_path);
-	// free(game.asset_data.west_tex_path);
-	// free(game.asset_data.east_tex_path);
-	// return (0);
-	
-
-// 	//* mehdi Part______________________
-	
-char map[11][15] = {
-    {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
-    {'1','0','0','0','0','0','0','0','0','0','0','0','1','0','1'},
-    {'1','0','0','1','0','1','0','0','0','0','0','0','1','0','1'},
-    {'1','0','1','1','1','0','0','0','0','0','1','0','1','0','1'},
-    {'1','0','0','0','0','0','0','0','0','0','1','0','1','0','1'},
-    {'1','0','0','0','0','0','0','0','1','1','1','1','1','0','1'},
-    {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
-    {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
-    {'1','1','1','1','1','1','0','0','0','1','1','1','1','0','1'},
-    {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
-    {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'}
-	};
-
-	int i = 0, j = 0;
-
-	game.map.height = 11;
-	game.map.width = 15;
-	game.map.map_player_x = 1.5;
-	game.map.map_player_y = 1.5;
-
-	game.player.x = game.map.map_player_x * TILE_SIZE; 
-	game.player.y = game.map.map_player_y * TILE_SIZE;
-	game.player.rotation_angle = 0;
-    game.player.turn_direction = 0;
-    game.player.walk_direction = 0;
-	game.player.strafe_direction = 0;
-    game.player.move_speed = 2;
-    game.player.rotation_speed = 2 * (PI / 180);
-
-	game.map.grid = malloc(sizeof(char *) * game.map.height);
-    if (!game.map.grid)
-		return (EXIT_FAILURE);
-		
-    for (int i = 0; i < game.map.height; i++) 
+	if (ac != 2)
 	{
-        game.map.grid[i] = malloc(sizeof(char) * (game.map.width + 1)); 
-        if (!game.map.grid[i])
-			return (EXIT_FAILURE);
-        ft_memcpy(game.map.grid[i], map[i], game.map.width);
-        game.map.grid[i][game.map.width] = '\0';
-    }
+		ft_putstr_fd("Usage: ./cub3D <path_to_map.cub>\n", 2);
+		return (1);
+	}
+	ft_memset(&game, 0, sizeof(t_game));
+	run_parser(av[1], &game);
+	// print_parsed_data(&game);
+	launch_game(&game);
+	free_grid(game.map.grid);
+	free(game.asset_data.north_tex_path);
+	free(game.asset_data.south_tex_path);
+	free(game.asset_data.west_tex_path);
+	free(game.asset_data.east_tex_path);
+	return (0);
 	
-	intialize_mlx(&game);
-
 }

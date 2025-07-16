@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:42:51 by ymazini           #+#    #+#             */
-/*   Updated: 2025/07/16 12:14:44 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:45:36 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,7 @@ void draw_player(t_game *game)
 		A = actuial wall height = TILE_SIZE
 		B = distance to wall = ray distance (from raycasting)
 		C = distance from player to proj.plane = (WINDOW_WIDTH / 2) / tan(FOV / 2)
-		D = A/B * C
-   
-  
+		D = A/B * C   
 */
 
 void	render_3d(t_game *game, int wall_top_pixel, int wall_bottom_pixel, int i)

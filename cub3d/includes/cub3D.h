@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:23:10 by ymazini           #+#    #+#             */
-/*   Updated: 2025/07/16 11:30:49 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/16 15:58:51 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include "../minilibx_opengl/mlx.h"
 #define WINDOW_HEIGHT 720
 #define WINDOW_WIDTH 1280
-#define TILE_SIZE 32
-#define MINIMAP_SCALE_FACTOR 0.5
+#define TILE_SIZE 64
+#define MINIMAP_SCALE_FACTOR 0.3
 
 #define PI 3.1415926535
 #define FOV (60 * (PI / 180.0))
@@ -119,7 +119,7 @@ typedef struct s_ray
 	bool	is_ray_facing_down;
 	bool	is_ray_facing_left;
 	bool	is_ray_facing_right;
-	// bool	was_hit_vertical;
+	bool	was_hit_vertical;
 }	t_ray;
 
 typedef struct s_player
@@ -203,6 +203,7 @@ void	validate_walls_are_closed(t_game *data);
 void	flood_fill_rec(t_game *data, char **grid_copy, int y, int x);
 int		get_max_width(char **grid);
 void	normalize_map_grid(t_game *data);
+void	parse_identifiers(t_list *id_lines, t_game *data);
 
 
 //-------- Helpers Func ----------//
