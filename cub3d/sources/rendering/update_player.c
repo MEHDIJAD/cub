@@ -12,8 +12,6 @@
 
 #include "../../includes/cub3D.h"
 
-#include "../../includes/cub3D.h"
-
 void	update_player(t_game *game)
 {
 	t_p	p;
@@ -34,4 +32,5 @@ void	update_player(t_game *game)
 	if(!hit_wall(game, p.new_x, p.new_y))
 		game->player.y = p.new_y;
 }
+
 

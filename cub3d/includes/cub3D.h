@@ -94,6 +94,8 @@ typedef struct s_map
 	double	map_player_y;
 	char	spawn_side_face;
 	int		player_count;
+
+	char	minigrid[10][10]; // new 
 }				t_map;
 
 typedef struct s_id_checker
@@ -279,5 +281,8 @@ void	initiatize_rayfacing(t_game *game, float ray_angle, int i);
 void	cast_one_ray(t_game *game, int i);
 void	store_final_hit(t_game *game, float h_dist, float v_dist, int i);
 void	render_3d_projaction(t_game *game);
+void	minimap(t_game *game);
+void 	draw_square(t_game *game, int x, int y, int color);
+void 	my_mlx_pixel_put_minimap(t_game *game, int x, int y, int color);
 
 #endif

@@ -29,7 +29,7 @@ void draw_line(t_game *game, float x1, float y1, float x2, float y2)
         line.steps = fabs(line.dy);
 	 if (line.steps == 0)
 	{
-        my_mlx_pixel_put(game, round(x1), round(y1), 0x00FF0000);
+        my_mlx_pixel_put_minimap(game, round(x1), round(y1), 0x00FF0000);
         return;
     }
     line.x_inc = line.dx / (float)line.steps;
@@ -39,7 +39,7 @@ void draw_line(t_game *game, float x1, float y1, float x2, float y2)
     for (int i = 0; i <= line.steps; i++)
     {
         if (line.x >= 0 && line.x < WINDOW_WIDTH&& line.y >= 0 && line.y < WINDOW_HEIGHT)
-        	my_mlx_pixel_put(game, round(line.x), round(line.y), 0x652424);
+        	my_mlx_pixel_put_minimap(game, round(line.x), round(line.y), 0x652424);
 		line.x += line.x_inc;
 		line.y += line.y_inc;
     }
@@ -84,6 +84,4 @@ void	store_final_hit(t_game *game, float h_dist, float v_dist, int i)
 		game->rays[i].was_hit_vertical = false;
 	}
 } 
-
-
 

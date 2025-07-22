@@ -12,7 +12,7 @@
 
 #include "../../includes/cub3D.h"
 
-static void	render_3d(t_game *game, int wall_top_pixel, int wall_bottom_pixel, int i)
+static void	render_3d(t_game *game, int wall_top_pixel, int wall_bottom_pixel, int i, int color)
 {
 	int	y;
 
@@ -21,7 +21,7 @@ static void	render_3d(t_game *game, int wall_top_pixel, int wall_bottom_pixel, i
 		my_mlx_pixel_put(game, i, y++, 0x0087CEEB);
 	y = wall_top_pixel;
 	while (y < wall_bottom_pixel)
-		my_mlx_pixel_put(game, i, y++,0x00A9A9A9);
+		my_mlx_pixel_put(game, i, y++, color);
 	y = wall_bottom_pixel;
 	while (y < WINDOW_HEIGHT)
 		my_mlx_pixel_put(game, i, y++, 0xc29b3e);
@@ -37,6 +37,24 @@ static void	render_3d(t_game *game, int wall_top_pixel, int wall_bottom_pixel, i
 		C = distance from player to proj.plane = (WINDOW_WIDTH / 2) / tan(FOV / 2)
 		D = A/B * C   
 */
+
+static int	get_wall_color(t_ray *ray)
+{
+	if (ray->was_hit_vertical)
+	{
+		if (ray->is_ray_facing_right)
+			return (0xFF0000); // West Wall - Red
+		else
+			return (0x00FF00); // East Wall - Green
+	}
+	else
+	{
+		if (ray->is_ray_facing_down)
+			return (0x0000FF); // North Wall - Blue
+		else
+			return (0xFFFF00); // South Wall - Yellow
+	}
+}
 
 void	render_3d_projaction(t_game *game)
 {
@@ -58,7 +76,10 @@ void	render_3d_projaction(t_game *game)
 		t.wall_bottom_pixel = (WINDOW_HEIGHT / 2) + (t.projected_wall_height / 2);
 		if (t.wall_bottom_pixel > WINDOW_HEIGHT)
 			t.wall_bottom_pixel = WINDOW_HEIGHT;
-		render_3d(game, t.wall_top_pixel, t.wall_bottom_pixel, i);
+		int wall_color;
+
+		wall_color = get_wall_color(&game->rays[i]);
+		render_3d(game, t.wall_top_pixel, t.wall_bottom_pixel, i, wall_color);
 		i++;
 	}	
 }

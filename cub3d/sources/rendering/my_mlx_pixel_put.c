@@ -19,15 +19,12 @@ void    my_mlx_pixel_put(t_game *game, int x, int y, int color)
 
     if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT){
 
-        dest = game->img.addr + (y * game->img.line_len + x * (game->img.bpp / 8));
-        *(unsigned int *)dest = color;
+	// if (x >= 0 && x < MINIMAP_WIDTH_IN_PIXELS &&
+		// y >= 0 && y < MINIMAP_HEIGHT_IN_PIXELS)
+		// {
+			dest = game->img.addr + (y * game->img.line_len + x * (game->img.bpp / 8));
+			*(unsigned int *)dest = color;
+		// }
     }
 }
 
-// void	my_mlx_pixel_put(t_game *game, int x, int y, int color)
-// {
-// 	char *dest;
-
-// 	dest = game->img.addr + (y * game->img.line_len + x * (game->img.bpp / 8));
-// 	*(unsigned int *)dest = color;
-// } 
