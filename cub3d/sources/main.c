@@ -85,8 +85,8 @@ bool	launch_game(t_game *game)
 	game->player.turn_direction = 0;
 	game->player.walk_direction = 0;
 	game->player.strafe_direction = 0;
-	game->player.move_speed = 3;
-	game->player.rotation_speed = 1 * (PI / 180);
+	game->player.move_speed = 4;
+	game->player.rotation_speed = 3 * (PI / 180);
 	intialize_mlx(game);
 	return (true);
 }
@@ -94,9 +94,7 @@ bool	launch_game(t_game *game)
 int	main(int ac, char **av)
 {
 	t_game	game;
-
-	// if (WINDOW_HEIGHT != 720 || WINDOW_WIDTH != 1280)
-	// 	return (1);
+	
 	if (ac != 2)
 	{
 		ft_putstr_fd("Usage: ./cub3D <path_to_map.cub>\n", 2);

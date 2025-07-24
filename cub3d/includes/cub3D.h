@@ -24,7 +24,7 @@
 
 # define WINDOW_HEIGHT 720
 # define WINDOW_WIDTH 1280
-# define TILE_SIZE 64
+# define TILE_SIZE 128
 
 // minimap macro
 #define MINIMAP_WIDTH_IN_PIXELS  200

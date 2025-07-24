@@ -76,7 +76,7 @@ void	store_final_hit(t_game *game, float h_dist, float v_dist, int i)
 		game->rays[i].wall_hit_y = game->rays[i].verthit_y;
 		game->rays[i].was_hit_vertical = true;
 	}
-	else 
+	else
 	{
 		game->rays[i].distance = h_dist;
 		game->rays[i].wall_hit_x = game->rays[i].horzhit_x;

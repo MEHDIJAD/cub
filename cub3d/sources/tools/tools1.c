@@ -32,20 +32,20 @@ void	exit_with_error(char *message, t_game *data)
 	ft_putstr_fd("Error:", 2);
 	ft_putstr_fd(message, 2);
 	ft_putchar_fd('\n', 2);
-	// if (data)
-	// {
-	// 	if (data->asset_data.north_tex_path)
-	// 		free(data->asset_data.north_tex_path);
-	// 	if (data->asset_data.south_tex_path)
-	// 		free(data->asset_data.south_tex_path);
-	// 	if (data->asset_data.east_tex_path)
-	// 		free(data->asset_data.east_tex_path);
-	// 	if (data->asset_data.west_tex_path)
-	// 		free(data->asset_data.east_tex_path);
-	// 	if (data->map.grid)
-	// 		free_grid(data->map.grid);
-	// 	exit(1);
-	// }
+	if (data)
+	{
+		// if (data->asset_data.north_tex_path)
+		// 	free(data->asset_data.north_tex_path);
+		// if (data->asset_data.south_tex_path)
+		// 	free(data->asset_data.south_tex_path);
+		// if (data->asset_data.east_tex_path)
+		// 	free(data->asset_data.east_tex_path);
+		// if (data->asset_data.west_tex_path)
+		// 	free(data->asset_data.east_tex_path);
+		// if (data->map.grid)
+		// 	free_grid(data->map.grid);
+		exit(1);
+	}
 }
 
 int	count_tokens(char **tokens)
