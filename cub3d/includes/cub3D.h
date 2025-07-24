@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymazini <ymazini@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 15:18:25 by ymazini           #+#    #+#             */
-/*   Updated: 2025/07/18 18:08:38 by ymazini          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:46:59 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #define MINIMAP_HEIGHT_IN_PIXELS  200
 #define MINIMAP_CENTER_X  100
 #define MINIMAP_CENTER_Y  100
-#define MINIMAP_VIEW_RADIUS_IN_TILES  5
+#define MINIMAP_VIEW_RADIUS_IN_TILES  4
 
 # define MINIMAP_SCALE_FACTOR 0.3
 
@@ -67,6 +67,17 @@ typedef struct s_rgb
 	int	is_set;
 }				t_rgb;
 
+typedef struct s_texture
+{
+	void	*img_ptr;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_texture;
+
 typedef struct s_assets
 {
 	char	*north_tex_path;
@@ -75,7 +86,7 @@ typedef struct s_assets
 	char	*west_tex_path;
 	t_rgb	floor_rgb;
 	t_rgb	ceilllig_rgb;
-	void	*wall_textures[4];
+	t_texture	textures[4];
 	int		checker_flag;
 }				t_assets;
 
@@ -284,5 +295,6 @@ void	render_3d_projaction(t_game *game);
 void	minimap(t_game *game);
 void 	draw_square(t_game *game, int x, int y, int color);
 void 	my_mlx_pixel_put_minimap(t_game *game, int x, int y, int color);
+void	load_textures(t_game *game);
 
 #endif

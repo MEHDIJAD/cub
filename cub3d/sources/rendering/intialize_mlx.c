@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:31:10 by eel-garo          #+#    #+#             */
-/*   Updated: 2025/07/16 08:19:19 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:59:15 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,14 @@ bool	intialize_mlx(t_game *game)
 	game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D");
 	if (!game->win)
 		return (false);
+	game->asset_data.north_tex_path = "/mnt/homes/eel-garo/Desktop/cub/cub3d/textures/north_texture.xpm" ;
+	game->asset_data.east_tex_path = "/mnt/homes/eel-garo/Desktop/cub/cub3d/textures/east_texture.xpm" ;
+	game->asset_data.west_tex_path = "/mnt/homes/eel-garo/Desktop/cub/cub3d/textures/west_texture.xpm";
+	game->asset_data.south_tex_path = "/mnt/homes/eel-garo/Desktop/cub/cub3d/textures/south_texture.xpm" ;
+	load_textures(game);
 	mlx_loop_hook(game->mlx, game_loop, game);
 	mlx_hook(game->win, 17, 0, ft_exit, game);
-	 mlx_hook(game->win, 2, 1L<<0, key_press_hook, game);
+	mlx_hook(game->win, 2, 1L<<0, key_press_hook, game);
     mlx_hook(game->win, 3, 1L<<1, key_release_hook, game);
 	mlx_loop(game->mlx);
 	return (true);		
