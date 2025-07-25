@@ -6,7 +6,7 @@
 /*   By: eel-garo <eel-garo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 09:31:10 by eel-garo          #+#    #+#             */
-/*   Updated: 2025/07/24 10:59:15 by eel-garo         ###   ########.fr       */
+/*   Updated: 2025/07/25 13:12:42 by eel-garo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,3 +76,4 @@ bool	intialize_mlx(t_game *game)
 	mlx_loop(game->mlx);
 	return (true);		
 }
+//lkjhvcm,mnvx
